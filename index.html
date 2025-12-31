@@ -28,21 +28,34 @@
 
         /* 標頭與搜尋框 */
 .header {
+            /* 1. 定位：讓它固定在頂部 */
             position: sticky;
             top: 0;
-            /* 改成半透明白色 */
-            background: rgba(255, 255, 255, 0.6); 
-            /* 這是玻璃效果的核心：背景模糊 */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); /* 確保 Safari 也能運作 */
-            
-            /* 增加內距讓內容不擁擠 */
-            padding: 15px 15px 25px 15px; 
-            margin: -20px -20px 20px -20px; /* 抵銷 body 的 padding，讓標頭填滿左右 */
-            
             z-index: 100;
+
+            /* 2. 玻璃質感核心：半透明背景與模糊 */
+            background: rgba(255, 255, 255, 0.7); /* 70% 透明度的白色 */
+            backdrop-filter: blur(15px);         /* 背景模糊強度 */
+            -webkit-backdrop-filter: blur(15px); /* 支援 Mac/iOS Safari */
+
+            /* 3. 邊距與形狀：讓它看起來像一個懸浮的區塊 */
+            margin: -20px -20px 20px -20px;       /* 抵銷 body padding 讓它貼邊 */
+            padding: 20px 30px;                  /* 內距，決定 h2 和搜尋框周圍的空間 */
+            
+            /* 4. 裝飾：底部細線與陰影 */
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            
+            /* 5. 對齊：讓 h2 和搜尋框置中 */
+            text-align: center; 
+        }
+
+        /* 針對 h2 的微調，確保它在 header 裡好看 */
+.header h2 {
+            margin: 0 0 15px 0;
+            color: #1c1e21;
+            font-size: 22px;
+            letter-spacing: 1px;
         }
 
         #searchBar {
