@@ -2,61 +2,106 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>洋蔥本舖補充標籤懶人包</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人文字發射器</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f4f7f6; }
-        .container { display: flex; flex-wrap: wrap; gap: 10px; }
-        button {
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; background: #f0f2f5; color: #1c1e21; }
+        .header { position: sticky; top: 0; background: #f0f2f5; padding-bottom: 15px; z-index: 100; }
+        h2 { margin-bottom: 10px; }
+        
+        /* 搜尋框樣式 */
+        #searchBar {
+            width: 100%;
             padding: 12px 20px;
             font-size: 16px;
-            cursor: pointer;
-            background-color: #fff;
-            border: 2px solid #007bff;
-            border-radius: 8px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        #searchBar:focus { border-color: #007bff; box-shadow: 0 0 8px rgba(0,123,255,0.2); }
+
+        h3 { color: #555; border-left: 4px solid #007bff; padding-left: 10px; margin-top: 25px; }
+        .container { display: flex; flex-wrap: wrap; gap: 10px; }
+        
+        /* 按鈕樣式 */
+        button {
+            padding: 10px 16px; font-size: 15px; cursor: pointer;
+            background-color: white; border: 1px solid #ced4da; border-radius: 8px;
             transition: all 0.2s;
         }
-        button:hover { background-color: #007bff; color: white; }
+        button:hover { background-color: #e7f3ff; color: #007bff; border-color: #007bff; }
         button:active { transform: scale(0.95); }
+        
+        /* 隱藏不符合搜尋條件的按鈕 */
+        .hidden { display: none !important; }
+
         .toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.7); color: white; padding: 10px 20px;
-            border-radius: 20px; display: none;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 10px 20px;
+            border-radius: 50px; display: none; z-index: 1000; font-size: 14px;
         }
     </style>
 </head>
 <body>
 
-    <h2>📋 點擊即可複製單詞</h2>
-    <div class="container">
-        <button onclick="copyIt('你好')">你好</button>
-        <button onclick="copyIt('這是我的地址')">這是我的地址</button>
-        <button onclick="copyIt('感謝您的回覆')">感謝您的回覆</button>
-        <button onclick="copyIt('example@email.com')">電子郵件</button>
-        <button onclick="copyIt('https://google.com')">Google 網址</button>
+    <div class="header">
+        <h2>📋 文字彈藥庫</h2>
+        <input type="text" id="searchBar" placeholder="🔍 輸入關鍵字搜尋單詞..." onkeyup="filterButtons()">
     </div>
 
-    <h3>📞 聯絡資訊</h3>
-    <div class="container">
-        <button onclick="copyIt('0912-345-678')">我的電話</button>
-        <button onclick="copyIt('my-email@example.com')">我的電子郵件</button>
-        <button onclick="copyIt('台北市...某某路某某號')">公司地址</button>
+    <div class="category">
+        <h3>👋 常用問候</h3>
+        <div class="container">
+            <button onclick="copyIt('你好，祝你有美好的一天')">你好</button>
+            <button onclick="copyIt('感謝您的回覆，我已收到。')">收到回覆</button>
+            <button onclick="copyIt('再見')">再見</button>
+        </div>
     </div>
 
-    <h3>📁 工作項目</h3>
-    <div class="container">
-        <button onclick="copyIt('單詞A')">按鈕A</button>
-        <button onclick="copyIt('單詞B')">按鈕B</button>
-    </div>
-
-    <h3>📁 區塊標題一</h3>
-    <div class="container">
-        <button onclick="copyIt('單詞1')">單詞1</button>
-        <button onclick="copyIt('單詞2')">單詞2</button>
+    <div class="category">
+        <h3>📞 聯絡資訊</h3>
+        <div class="container">
+            <button onclick="copyIt('0912-345-678')">我的電話</button>
+            <button onclick="copyIt('台北市信義區某某路')">公司地址</button>
+            <button onclick="copyIt('example@mail.com')">電子郵件</button>
+        </div>
     </div>
 
     <div id="toast" class="toast">已複製！</div>
 
     <script>
+        // 搜尋功能邏輯
+        function filterButtons() {
+            const input = document.getElementById('searchBar').value.toLowerCase();
+            const buttons = document.getElementsByTagName('button');
+            const categories = document.querySelectorAll('.category');
+
+            for (let btn of buttons) {
+                // 如果按鈕文字或要複製的內容包含關鍵字，就顯示
+                const text = btn.innerText.toLowerCase();
+                const copyText = btn.getAttribute('onclick').toLowerCase();
+                
+                if (text.includes(input) || copyText.includes(input)) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+
+            // 如果某分類下所有按鈕都隱藏了，就把標題也隱藏
+            categories.forEach(cat => {
+                const visibleButtons = cat.querySelectorAll('button:not(.hidden)');
+                if (visibleButtons.length === 0) {
+                    cat.classList.add('hidden');
+                } else {
+                    cat.classList.remove('hidden');
+                }
+            });
+        }
+
+        // 複製功能邏輯
         function copyIt(text) {
             navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById('toast');
