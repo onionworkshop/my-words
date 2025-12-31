@@ -27,28 +27,43 @@
         }
 
         /* 標頭與搜尋框 */
-        .header {
+.header {
             position: sticky;
             top: 0;
-            background: var(--bg-color);
-            padding: 10px 0 20px 0;
+            /* 改成半透明白色 */
+            background: rgba(255, 255, 255, 0.6); 
+            /* 這是玻璃效果的核心：背景模糊 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* 確保 Safari 也能運作 */
+            
+            /* 增加內距讓內容不擁擠 */
+            padding: 15px 15px 25px 15px; 
+            margin: -20px -20px 20px -20px; /* 抵銷 body 的 padding，讓標頭填滿左右 */
+            
             z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         #searchBar {
             width: 100%;
             padding: 12px 20px;
             font-size: 16px;
-            border: 2px solid #ddd;
+            /* 讓搜尋框也帶有一點透明感 */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.8);
+            
             border-radius: 50px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
             box-sizing: border-box;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         #searchBar:focus {
             border-color: var(--primary-color);
+            background: #fff; /* 點擊輸入時變回全白，比較好打字 */
+            box-shadow: 0 4px 12px rgba(0,123,255,0.2);
         }
 
         /* 層級樣式 */
