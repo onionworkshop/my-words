@@ -24,13 +24,14 @@
             background-position: center;
         }
 
-        /* 玻璃擬態 Header (包含 H2 和搜尋框) */
+        /* 玻璃擬態 Hea玻璃擬態 Header (包含 H2 和搜尋框) */
         .header {
             position: sticky;
             top: 0;
             z-index: 100;
             background: var(--bg-overlay);
             backdrop-filter: blur(15px);
+            border-radius: 12px;
             -webkit-backdrop-filter: blur(15px);
             margin: -20px -20px 20px -20px;
             padding: 20px 30px;
@@ -126,11 +127,11 @@
     </style>
 </head>
 
-        
-`TEST`
+
+
+    
 <body>
 
-     /* 搜尋引擎 */
     <div class="header">
         <h2>📋 文字彈藥庫</h2>
         <input type="text" id="searchBar" placeholder="🔍 輸入關鍵字..." onkeyup="filterButtons()">
@@ -138,7 +139,7 @@
 
     <details class="category" open>
         <summary>
-            <h3>👋 常用問候</h3>
+            <h3>GBF標籤</h3>
             <span class="toggle-icon">▼</span>
         </summary>
         <div class="category-content">
