@@ -3,228 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【洋蔥本舖標籤懶人包】</title>
+    <title>我的文字彈藥庫</title>
     <style>
         :root {
             --primary-color: #007bff;
-            --bg-color: #f4f7f6;
-            --text-color: #333;
+            --text-color: #1c1e21;
+            --bg-overlay: rgba(255, 255, 255, 0.7);
         }
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             padding: 20px; 
-            background: var(--bg-color); 
+            margin: 0;
             color: var(--text-color);
             line-height: 1.5;
-
-            /* --- 新增背景圖片設定 --- */
-            background-image: url(https://images.plurk.com/5PkNfNZ3Yeap5vkz624y48.jpg); /* 這裡填入圖片網址 */
-            background-size: cover;              /* 讓圖片鋪滿全螢幕 */
-            background-attachment: fixed;        /* 捲動時背景固定不動，很有質感 */
-            background-position: center;         /* 圖片置中 */
-            background-repeat: no-repeat;        /* 不重複圖片 */
+            /* 背景圖設定 - 你可以換成你喜歡的網址 */
+            background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
         }
 
-        /* 標頭與搜尋框 */
-.header {
-            /* 1. 定位：讓它固定在頂部 */
+        /* 玻璃擬態 Header (包含 H2 和搜尋框) */
+        .header {
             position: sticky;
             top: 0;
             z-index: 100;
-
-            /* 2. 玻璃質感核心：半透明背景與模糊 */
-            background: rgba(255, 255, 255, 0.7); /* 70% 透明度的白色 */
-            backdrop-filter: blur(15px);         /* 背景模糊強度 */
-            -webkit-backdrop-filter: blur(15px); /* 支援 Mac/iOS Safari */
-
-            /* 3. 邊距與形狀：讓它看起來像一個懸浮的區塊 */
-            margin: -20px -20px 20px -20px;       /* 抵銷 body padding 讓它貼邊 */
-            padding: 20px 30px;                  /* 內距，決定 h2 和搜尋框周圍的空間 */
-            
-            /* 4. 裝飾：底部細線與陰影 */
+            background: var(--bg-overlay);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            margin: -20px -20px 20px -20px;
+            padding: 20px 30px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            
-            /* 5. 對齊：讓 h2 和搜尋框置中 */
-            text-align: center; 
+            text-align: center;
         }
 
-        /* 針對 h2 的微調，確保它在 header 裡好看 */
-.header h2 {
-            margin: 0 0 15px 0;
-            color: #1c1e21;
-            font-size: 22px;
-            letter-spacing: 1px;
-        }
+        h2 { margin: 0 0 15px 0; font-size: 22px; }
 
         #searchBar {
             width: 100%;
             padding: 12px 20px;
             font-size: 16px;
-            /* 讓搜尋框也帶有一點透明感 */
             border: 1px solid rgba(255, 255, 255, 0.5);
             background: rgba(255, 255, 255, 0.8);
-            
             border-radius: 50px;
             outline: none;
             transition: all 0.3s;
             box-sizing: border-box;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        #searchBar:focus {
-            border-color: var(--primary-color);
-            background: #fff; /* 點擊輸入時變回全白，比較好打字 */
-            box-shadow: 0 4px 12px rgba(0,123,255,0.2);
-        }
-
-        /* 層級樣式 */
-        h2 { margin: 0 0 10px 0; font-size: 24px; }
-        
-        .category { margin-bottom: 30px; }
-        
-        h3 { 
-            color: #dee2e6; 
-            border-left: 5px solid var(--primary-color); 
-            padding-left: 12px; 
+        /* 收合區塊樣式 (H3) */
+        .category {
             margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            transition: all 0.3s;
         }
+
+        summary {
+            padding: 15px 20px;
+            list-style: none; /* 隱藏預設箭頭 */
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            outline: none;
+        }
+
+        summary::-webkit-details-marker { display: none; } /* Safari 隱藏箭頭 */
+
+        h3 { 
+            margin: 0; 
+            font-size: 18px;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* 當 details 打開時旋轉箭頭 */
+        .category[open] .toggle-icon { transform: rotate(180deg); }
+
+        /* 子分類內容區 */
+        .category-content { padding: 0 20px 20px 20px; }
 
         .sub-category {
-            margin-left: 15px;
-            margin-bottom: 20px;
+            margin-top: 15px;
             padding-left: 15px;
-            border-left: 2px solid #dee2e6;
+            border-left: 2px solid rgba(0,0,0,0.1);
         }
 
-        h4 { 
-            margin: 0 0 10px 0; 
-            color: #dee2e6; 
-            font-size: 15px; 
-            font-weight: 600;
-        }
+        h4 { margin: 0 0 10px 0; color: #555; font-size: 14px; }
 
-        /* 按鈕容器 */
-        .container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 10px; 
-        }
+        .container { display: flex; flex-wrap: wrap; gap: 8px; }
 
         button {
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: white;
-            border: 1px solid #ced4da;
+            padding: 8px 14px;
+            background: white;
+            border: 1px solid #ddd;
             border-radius: 6px;
-            transition: all 0.2s;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        button:hover {
-            background-color: #e7f3ff;
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
+        button:hover { background: var(--primary-color); color: white; }
 
-        button:active {
-            transform: scale(0.95);
-        }
-
-        /* 隱藏邏輯 */
         .hidden { display: none !important; }
 
-        /* 複製提示 */
         .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 50px;
-            display: none;
-            z-index: 1000;
-            font-size: 14px;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); color: white; padding: 10px 25px;
+            border-radius: 50px; display: none; z-index: 1000;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>🚀 搜尋引擎 🚀</h2>
-        <input type="text" id="searchBar" placeholder="🔍 搜尋大分類、子分類或單詞..." onkeyup="filterButtons()">
+        <h2>📋 文字彈藥庫</h2>
+        <input type="text" id="searchBar" placeholder="🔍 輸入關鍵字..." onkeyup="filterButtons()">
     </div>
 
-
-
-
-    
-    <div class="category">
-        <h3>GBF的標籤</h3>
-        
-        <div class="sub-category">
-            <h4> 牛爸 </h4>
-            <div class="container">
-                <button onclick="copyIt('GranblueFantasy')">GranblueFantasy</button>
-                <button onclick="copyIt('グランブルーファンタジー')">グランブルーファンタジー</button>
-                <button onclick="copyIt('グラブル')">グラブル</button>
-                <button onclick="copyIt('Agielba')">Agielba</button>
-                <button onclick="copyIt('アギエルバ')">アギエルバ</button>
+    <details class="category" open>
+        <summary>
+            <h3>👋 常用問候</h3>
+            <span class="toggle-icon">▼</span>
+        </summary>
+        <div class="category-content">
+            <div class="sub-category">
+                <h4>🏢 公司用</h4>
+                <div class="container">
+                    <button onclick="copyIt('您好，附件為會議記錄。')">會議記錄</button>
+                    <button onclick="copyIt('好的，收到了。')">收到</button>
+                </div>
+            </div>
+            <div class="sub-category">
+                <h4>🏠 家中用</h4>
+                <div class="container">
+                    <button onclick="copyIt('我出發回家了。')">回家</button>
+                </div>
             </div>
         </div>
+    </details>
 
-        <div class="sub-category">
-            <h4>歐根</h4>
-            <div class="container">
-                <button onclick="copyIt('GranblueFantasy')">GranblueFantasy</button>
-                <button onclick="copyIt('グランブルーファンタジー')">グランブルーファンタジー</button>
-                <button onclick="copyIt('グラブル')">グラブル</button>
-                <button onclick="copyIt('Eugen')">Eugen</button>
-                <button onclick="copyIt('オイゲン')">オイゲン</button>
+    <details class="category" open>
+        <summary>
+            <h3>📞 聯絡資訊</h3>
+            <span class="toggle-icon">▼</span>
+        </summary>
+        <div class="category-content">
+            <div class="sub-category">
+                <h4>📍 基本資料</h4>
+                <div class="container">
+                    <button onclick="copyIt('0912-345-678')">我的電話</button>
+                    <button onclick="copyIt('台北市...')">我的地址</button>
+                </div>
             </div>
         </div>
+    </details>
 
-        <div class="sub-category">
-            <h4>土拳</h4>
-            <div class="container">
-                <button onclick="copyIt('GranblueFantasy')">GranblueFantasy</button>
-                <button onclick="copyIt('グランブルーファンタジー')">グランブルーファンタジー</button>
-                <button onclick="copyIt('グラブル')">グラブル</button>
-                <button onclick="copyIt('Soriz')">Soriz</button>
-                <button onclick="copyIt('ソリッズ')">ソリッズ</button>
-            </div>
-        </div>
-
-        <div class="sub-category">
-            <h4>光頭</h4>
-            <div class="container">
-                <button onclick="copyIt('GranblueFantasy')">GranblueFantasy</button>
-                <button onclick="copyIt('グランブルーファンタジー')">グランブルーファンタジー</button>
-                <button onclick="copyIt('グラブル')">グラブル</button>
-                <button onclick="copyIt('Ghandagoza')">Ghandagoza</button>
-                <button onclick="copyIt('ガンダゴウザ')">ガンダゴウザ</button>
-            </div>
-        </div>        
-    </div>
-
-    <div class="category">
-        <h3>📞 聯絡資訊</h3>
-        <div class="sub-category">
-            <h4>📍 地址與電話</h4>
-            <div class="container">
-                <button onclick="copyIt('0912-345-678')">我的電話</button>
-                <button onclick="copyIt('台北市信義區某某路123號')">公司地址</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="toast">已複製到剪貼簿！</div>
+    <div id="toast" class="toast">已複製！</div>
 
     <script>
-        // 搜尋邏輯
+        // 搜尋與自動展開邏輯
         function filterButtons() {
             const input = document.getElementById('searchBar').value.toLowerCase();
             const categories = document.querySelectorAll('.category');
@@ -232,67 +181,53 @@
             categories.forEach(cat => {
                 const h3Text = cat.querySelector('h3').innerText.toLowerCase();
                 const subCategories = cat.querySelectorAll('.sub-category');
-                let catHasVisibleContent = false;
+                let catHasMatch = false;
 
                 subCategories.forEach(sub => {
                     const h4Text = sub.querySelector('h4').innerText.toLowerCase();
                     const buttons = sub.querySelectorAll('button');
-                    let subHasVisibleButton = false;
+                    let subHasMatch = false;
 
                     buttons.forEach(btn => {
                         const btnText = btn.innerText.toLowerCase();
-                        // 判斷按鈕是否匹配
                         if (btnText.includes(input)) {
                             btn.classList.remove('hidden');
-                            subHasVisibleButton = true;
+                            subHasMatch = true;
                         } else {
                             btn.classList.add('hidden');
                         }
                     });
 
-                    // 如果「主標題」匹配，則顯示子分類下所有內容
-                    if (h3Text.includes(input)) {
+                    // 如果標題匹配或按鈕匹配，顯示子分類
+                    if (h3Text.includes(input) || h4Text.includes(input) || subHasMatch) {
                         sub.classList.remove('hidden');
-                        buttons.forEach(btn => btn.classList.remove('hidden'));
-                        subHasVisibleButton = true;
-                    } 
-                    // 如果「子標題」匹配，顯示子分類下所有按鈕
-                    else if (h4Text.includes(input)) {
-                        sub.classList.remove('hidden');
-                        buttons.forEach(btn => btn.classList.remove('hidden'));
-                        subHasVisibleButton = true;
-                    }
-                    // 如果只有按鈕匹配
-                    else if (subHasVisibleButton) {
-                        sub.classList.remove('hidden');
-                    }
-                    else {
+                        if (h3Text.includes(input) || h4Text.includes(input)) {
+                            buttons.forEach(b => b.classList.remove('hidden'));
+                        }
+                        subHasMatch = true;
+                    } else {
                         sub.classList.add('hidden');
                     }
-
-                    if (subHasVisibleButton) catHasVisibleContent = true;
+                    if (subHasMatch) catHasMatch = true;
                 });
 
-                // 最後控制大分類顯示
-                if (catHasVisibleContent || h3Text.includes(input)) {
+                if (catHasMatch || h3Text.includes(input)) {
                     cat.classList.remove('hidden');
+                    if (input !== "") cat.setAttribute('open', ''); // 關鍵：搜尋時自動展開
                 } else {
                     cat.classList.add('hidden');
                 }
             });
         }
 
-        // 複製邏輯
+        // 複製功能
         function copyIt(text) {
             navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById('toast');
                 toast.style.display = 'block';
                 setTimeout(() => { toast.style.display = 'none'; }, 1000);
-            }).catch(err => {
-                console.error('無法複製', err);
             });
         }
     </script>
-
 </body>
 </html>
